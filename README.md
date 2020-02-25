@@ -1,4 +1,4 @@
-# MineLogger
+# ModLogger
 Minecraft Chat Logger module
 
 # Usage: 
