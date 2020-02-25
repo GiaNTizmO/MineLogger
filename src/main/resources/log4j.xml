@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Appenders>
+        <JDBC name="databaseAppender" tableName="test.logs">
+            <DriverManager
+                connectionString="jdbc:mysql://127.0.0.1/test"
+                userName="mysql"
+                password="mysql"
+            />
+            <Column name="time" isEventTimestamp="true" />
+            <Column name="line" pattern="%message" />
+            <Column name="server_uid" literal="0" />
+        </JDBC>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="databaseAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>
