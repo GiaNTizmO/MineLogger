@@ -112,7 +112,7 @@ public class ModLogger
 
                 if (lastSize != lines.size()) {
                     StringBuilder sql = new StringBuilder("INSERT INTO `logs` (`server_uid`, `line`) VALUES");
-                    List<String> linesToSend = new ArrayList<String>();
+                    List<String> linesToSend = new ArrayList<>();
 
                     ListIterator<String> it = lines.listIterator(lastSize);
                     lastSize = lines.size();
@@ -127,7 +127,7 @@ public class ModLogger
                         linesToSend.add(line);
                     }
 
-                    if (0 == linesToSend.size()) {
+                    if (linesToSend.isEmpty()) {
                         return;
                     }
 
@@ -149,11 +149,7 @@ public class ModLogger
 
     private boolean isBlacklisted(final String line)
     {
-        for (String regex : config.getLogBlacklist()){
-            if (regex.startsWith("^")) {
-                regex = "^(?:\\[\\d{2}:\\d{2}:\\d{2}\\] )?" + regex.substring(1);
-            }
-            Pattern ptr = Pattern.compile(regex);
+        for (Pattern ptr : config.getLogBlacklistPatterns()){
             Matcher matcher = ptr.matcher(line);
             if (matcher.find()) {
                 return true;
