@@ -3,6 +3,7 @@ package ru.gamania.logger.config;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 public class Config
 {
@@ -18,6 +19,7 @@ public class Config
     private String dbPass;
 
     private String[] logBlacklist;
+    private Pattern[] logBlacklistPatterns;
 
     public Config(final File file)
     {
@@ -65,6 +67,15 @@ public class Config
         }, "Logs that are ignored and are not sent to the database");
 
         cfg.save();
+
+        logBlacklistPatterns = new Pattern[logBlacklist.length];
+        for (int i = 0, length = logBlacklist.length; i < length; i++)
+        {
+            String regex = logBlacklist[i];
+            if (regex.startsWith("^"))
+                regex = "^(?:\\[\\d{2}:\\d{2}:\\d{2}\\] )?" + regex.substring(1);
+            logBlacklistPatterns[i] = Pattern.compile(regex);
+        }
     }
 
     public int getServerUid()
@@ -105,5 +116,10 @@ public class Config
     public String[] getLogBlacklist()
     {
         return logBlacklist;
+    }
+
+    public Pattern[] getLogBlacklistPatterns()
+    {
+        return logBlacklistPatterns;
     }
 }

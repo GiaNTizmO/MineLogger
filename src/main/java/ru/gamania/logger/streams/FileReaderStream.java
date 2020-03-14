@@ -1,38 +1,58 @@
 package ru.gamania.logger.streams;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 public class FileReaderStream
 {
-    private final File log;
+	private static final boolean STRICT_MODE = true;
+	private final Path log;
 
-    public FileReaderStream(File file)
-    {
-        this.log = Paths.get(file.getParentFile().getAbsolutePath(), "logs", "latest.log").toFile();
-    }
+	public FileReaderStream(File file)
+	{
+		this.log = file.getParentFile().toPath().resolve("logs").resolve("latest.log");
+	}
 
-    public final List<String> getLines()
-    {
-        List<String> lines = new ArrayList<>();
+	public final List<String> getLines()
+	{
+		if (STRICT_MODE)
+		{
+			try
+			{
+				return Files.readAllLines(this.log, StandardCharsets.UTF_8);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 
-        try (FileReader fileReader = new FileReader(this.log)) {
-            Scanner scanner = new Scanner(fileReader);
+			return Collections.emptyList();
+		}
 
-            while (scanner.hasNextLine())
-                lines.add(scanner.nextLine());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		List<String> lines = new ArrayList<>();
 
-        return lines;
-    }
+		try (BufferedReader reader = Files.newBufferedReader(this.log, StandardCharsets.UTF_8))
+		{
+			while (true)
+			{
+				String line = reader.readLine();
+				if (line == null)
+					break;
+				lines.add(line);
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return lines;
+	}
 }

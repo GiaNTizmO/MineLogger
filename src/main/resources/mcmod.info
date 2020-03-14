@@ -1,0 +1,16 @@
+[
+{
+  "modid": "modlogger",
+  "name": "ModLogger",
+  "description": "ModLogger for kaboom2",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["rept1d", "Gamania"],
+  "credits": "The Forge and FML guys, for making MDK",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
