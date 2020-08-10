@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 version = "1.7.10"
-group= "ru.zoom4ikdan4ik" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "ru.gamania" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Socket Logger"
 
 targetCompatibility = "1.8"
